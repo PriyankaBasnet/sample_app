@@ -1,0 +1,53 @@
+#! /bin/bash
+
+SERVER_ENV=$1
+: ${SERVER_ENV:=local}
+
+run_server() {
+supervisord -n -c <(cat <<EOF
+[supervisord]
+
+[program:app-server]
+command=./bin/bundle exec puma
+stdout_events_enabled=true
+stderr_events_enabled=true
+stdout_logfile=/dev/stdout
+stderr_logfile=/dev/stderr
+stopasgroup=true
+
+[program:asset-server]
+command=./bin/webpack-dev-server --hot --inline
+stdout_events_enabled=true
+stderr_events_enabled=true
+stdout_logfile=/dev/stdout
+stderr_logfile=/dev/stderr
+stopasgroup=true
+EOF
+)
+}
+
+if [ "$SERVER_ENV" == "local" ]
+then
+   bundle install &&
+   yarn install &&
+   bin/rails db:migrate RAILS_ENV=development &&
+   RAILS_ENV="development" run_server
+fi
+
+if [ "$SERVER_ENV" == "staging" ]
+then
+    bundle install &&
+    yarn install &&
+    SECRET_KEY_BASE=bc774b9bffc61dd6d7d8e625ec065003e5e2224db70acdac5fceda70645be66246f2fbcbed3f855bd87cb993f97a6bf7a68da2e375bbbaf074015d44e7217935 \
+    RAILS_SERVE_STATIC_FILES=true \
+    run_server
+fi
+
+if [ "$SERVER_ENV" == "production" ]
+then
+   bundle install &&
+   yarn install &&
+   SECRET_KEY_BASE=bc774b9bffc61dd6d7d8e625ec065003e5e2224db70acdac5fceda70645be66246f2fbcbed3f855bd87cb993f97a6bf7a68da2e375bbbaf074015d44e7217935 \
+   RAILS_SERVE_STATIC_FILES=true \
+   run_server
+fi
