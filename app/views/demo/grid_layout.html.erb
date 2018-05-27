@@ -1,0 +1,121 @@
+<div class="click-trap" onclick="togglePopUp()"></div>
+<div class="container">
+    <div class="gallery-container">
+      <div class="gallery-header">
+        <div class="gallery-logo-wrapper">
+          <img src="https://thepinkrosebakerydotcom.files.wordpress.com/2016/01/instagram-logo-copy.png" class="gallery-logo">
+        </div>
+        <div class="gallery-header-text">StyleCracker</div>
+      </div>
+      <div class="grid">
+        <% @images.each do |image| %>
+          <div class="image-content">
+            <div class="item">
+              <img onclick="getImagePopup('<%= image.url %>')" data-image-full="<%= image.url %>" class="image-card" />
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="image-popup-container">
+      <div class="image-original">
+        <div onclick="closeImagePopup()" class="close-button-image-wrapper">
+          <img class="close-button-image" src="https://beautygroup.eu/image/catalog/popup/closebutton.png">
+        </div>
+       <div class="zoom-image-container">
+         <figure>
+           <img class="zoom-image" onmousemove="magnifyImage(event)" onmouseleave="resetZoomImage(event)" src="">
+         </figure>
+       </div>
+      </div>
+    </div>
+    <div class="top-scrollbar" onclick="resetPageOffset()">Back To Top</div>
+</div>
+
+<script>
+
+window.addEventListener('scroll', ()=> {
+  if(window.pageYOffset > 1500) {
+    document.getElementsByClassName('top-scrollbar')[0].style.display = 'block';
+  } else {
+      document.getElementsByClassName('top-scrollbar')[0].style.display = 'none';
+  }
+  lazyload();
+});
+
+function resetPageOffset() {
+  window.scrollTo(0, 0);
+}
+
+ //lazyload starts from here
+   window.onload = lazyload();
+    function lazyload() {
+      setTimeout(loadImages, 2000);
+      function loadImages() {
+        const imageElement =  document.querySelectorAll('.image-card');
+        imageElement.forEach(function(image){
+          const viewportHeight = window.innerHeight + window.pageYOffset;
+          if(image.offsetTop < viewportHeight || image.offsetTop == viewportHeight) {
+              imageUrl = image.getAttribute('data-image-full');
+              image.src = imageUrl;
+              image.style.backgroundImage = 'url(' + imageUrl + ')';
+              setTimeout(removeBlurFromImages(image), 3500);
+           }
+        });
+      }
+    }
+
+    function removeBlurFromImages(image) {
+      image.classList.add('is-loaded');
+    }
+
+    function togglePopUp(){
+      document.getElementsByClassName('image-popup-container')[0].style.display = "none";
+      document.getElementsByClassName('gallery-container')[0].classList.remove('blur-gallery-conatiner');
+      document.getElementsByClassName('click-trap')[0].style.display = "none";
+    }
+
+    //getImagePopup starts from here
+    function getImagePopup(imageUrl) {
+      const zoomImageElement = document.getElementsByClassName('zoom-image')[0];
+      zoomImageElement.src = imageUrl;
+      const popUpContainer = document.getElementsByClassName('image-popup-container')[0];
+      popUpContainer.style.display="block";
+      document.getElementsByClassName('click-trap')[0].style.display = "block";
+      const documentElement = document.getElementsByClassName('gallery-container')[0];
+      documentElement.classList.add('blur-gallery-conatiner');
+
+    }
+
+    //closeImagePopup starts There
+    function closeImagePopup() {
+      document.getElementsByClassName('image-popup-container')[0].style.display="none";
+      const documentElement = document.getElementsByClassName('gallery-container')[0];
+      documentElement.classList.remove('blur-gallery-conatiner');
+      document.getElementsByClassName('click-trap')[0].style.display = "none";
+    }
+
+    //zoomImage starts here
+    function magnifyImage(event){
+      const xCoordinate = event.offsetX;
+      const yCoordinate = event.offsetY;
+      const backgroundPositionX = (xCoordinate / event.target.clientWidth) * 100;
+      const backgroundPositionY = (yCoordinate / event.target.clientHeight ) * 100;
+      const imgUrl = document.getElementsByClassName('zoom-image')[0].src;
+      const zoomContainer = document.getElementsByClassName('zoom-image-container')[0];
+      zoomContainer.style.backgroundImage = `url('${imgUrl}')`;
+      document.getElementsByClassName('zoom-image')[0].style.opacity = "0";
+      zoomContainer.style.setProperty('background-position-x',  backgroundPositionX+'%');
+      zoomContainer.style.setProperty('background-position-y',  backgroundPositionY+'%');
+    }
+
+    // resetZoomImage starts here
+    function resetZoomImage(event) {
+      document.getElementsByClassName('zoom-image')[0].style.opacity = "1";
+      const zoomContainer = document.getElementsByClassName('zoom-image-container')[0];
+      zoomContainer.style.backgroundImage = 'none';
+      zoomContainer.style.setProperty('background-position-x',  0);
+      zoomContainer.style.setProperty('background-position-y',  0);
+    }
+</script>

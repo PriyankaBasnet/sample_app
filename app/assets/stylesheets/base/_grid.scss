@@ -1,0 +1,10 @@
+@import "../vendor/breakpoint/breakpoint.scss";
+//Mobile
+$mobile-small: em(240);
+$mobile-large: em(320);
+//Tablet
+$tablet-small: em(480);
+$tablet-large: em(768);
+//Pc
+$screen-small: em(1024);
+$screen-large: em(1280);

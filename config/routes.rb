@@ -3,6 +3,7 @@ Rails.application.routes.draw do
 
 
 get "/index_page" => "demo#index"
-
+get "/grid_layout" => "demo#grid_layout"
+get "/animation" => "demo#animation"
 
 end

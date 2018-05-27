@@ -1,0 +1,64 @@
+.big-circle {
+   width: 30px;
+   height: 30px;
+   position: absolute;
+   top: 400px;
+   left: 500px;
+   border-radius: 50%;
+   border: 1px solid white;
+   animation-name: circularWave;
+   animation-duration: 2s;
+   animation-iteration-count: infinite;
+   animation-timing-function: ease-in-out;
+   animation-direction: reverse;
+   animation-delay: 2s;
+}
+
+@keyframes circularWave {
+  0% {
+    transform: scale(6, 6);
+    box-shadow: 0 0 1px green;
+  }
+
+  50% {
+    transform: scale(1, 1);
+  }
+}
+
+.inner-circle {
+  background-color: green;
+  position: absolute;
+  top: 410px;
+  left: 510px;
+  border-radius: 50%;
+  width: 12px;
+  height: 12px;
+}
+
+.circle-wrapper {
+  position: relative;
+}
+
+.map-nav-icon {
+  width: 40px;
+  height: 40px;
+}
+
+.map-nav-icon-wrapper {
+  position: relative;
+  animation-name: moveMap;
+  animation-duration: 3s;
+  animation-fill-mode: forwards;
+  -webkit-animation-fill-mode: forwards;
+  animation-timing-function: ease;
+}
+
+@keyframes moveMap {
+  from {
+    transform: translate(0px, 10px);
+  }
+
+  to {
+    transform: translate(496px, 378px);
+  }
+}

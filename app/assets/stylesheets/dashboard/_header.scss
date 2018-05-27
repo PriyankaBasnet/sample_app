@@ -1,0 +1,37 @@
+.dashboard-header{
+  background-color: #32429c;
+  padding: 8px 20px;
+  display: grid;
+  grid-template-columns: 12fr 1fr 1fr 1fr;
+  align-items: center;
+
+  @media only screen and (max-width: 1023px) {
+    grid-template-columns: 10fr 1fr;
+ }
+
+  .menu-icon, .search-icon, .message-icon {
+    width: 25px;
+    height: 25px;
+  }
+
+  .hamburger {
+
+  }
+
+  .author-image-container {
+    justify-self: end;
+  }
+
+  .search-box, .message-box {
+    justify-self: end;
+    @media only screen and (max-width: 1023px) {
+      display: none;
+   }
+  }
+
+  .author-image {
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+  }
+}
