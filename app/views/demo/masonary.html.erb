@@ -1,0 +1,93 @@
+<div class="masonary-layout" id="masonary-layout">
+  <% @images.each_with_index do |image, index| %>
+  <div class="container" id="container-<%= index %>">
+    <% if index < 6 == true %>
+     <img data-image-full="<%= image.url %>" class="container-image-card" id="container-image-<%= index %>" src="<%= image.url %>" />
+    <% else %>
+     <img data-image-full="<%= image.url %>" class="container-image-card" id="container-image-<%= index %>" />
+    <% end %>
+ </div>
+ <% end %>
+</div>
+
+
+<script>
+
+window.onload = loadOnViewportImages();
+window.addEventListener('scroll', ()=> {
+  loadOnViewportImages();
+});
+
+function loadOnViewportImages() {
+  const imageCard =  document.querySelectorAll('.container');
+  imageCard.forEach(function(card, index) {
+    const viewportHeight = window.innerHeight + window.pageYOffset;
+    if(card.offsetTop <= viewportHeight) {
+       const image = document.getElementById('container-image-'+index);
+        imageUrl = image.getAttribute('data-image-full');
+        image.src = imageUrl;
+        masonaryLayout(card, index);
+     }
+  });
+}
+
+function masonaryLayout(imageCard, index) {
+     const cloumn= 4;
+     const width = 100/cloumn;
+     var body = document.body,
+     html = document.documentElement;
+     var height = document.documentElement.getBoundingClientRect().height;
+     document.getElementById('masonary-layout').style.height = height+'px';
+           imageCard.style.width = 'calc('+width+'% - 16px)';
+           document.getElementById('container-image-'+index).style.width = imageCard.clientWidth - 40 +'px';
+           const left = getLeftvalue(index+1, cloumn, imageCard.clientWidth);
+           imageCard.style.left = left+'px';
+           imageCard.style.position = 'absolute';
+           if(index < 3) {
+             imageCard.style.top = 0;
+           } else {
+             const topvalue = getTopvalue(index, cloumn);
+             imageCard.style.top = topvalue+'px';
+           }
+ }
+
+  function getTopvalue(indexValue, cloumn) {
+    var topvalue = 0;
+    var indexId = indexValue;
+    var iteration = Math.ceil((indexValue + 1) / cloumn);
+    var newIteration = iteration -1;
+     for(newIteration; newIteration > 0; newIteration--) {
+         indexId += - cloumn;
+       topvalue += document.getElementById('container-image-'+indexId).clientHeight + 18;
+     }
+    return topvalue;
+  }
+
+  function returnLeftvalue(indexValue, cloumn, width) {
+      if((indexValue % cloumn) == 0) {
+        const leftValue = ((cloumn-1) * (463)) + (16*(cloumn-1));
+        return leftValue;
+      }
+
+      else if((indexValue+1)%(cloumn) == 0) {
+        const leftValue = ((cloumn-2) * (463)) + (16*(cloumn-2));
+        return leftValue;
+      }
+
+      else if((indexValue+2)%(cloumn) == 0) {
+        const leftValue = 0;
+        return leftValue;
+      }
+  }
+
+
+  function getLeftvalue(indexValue, cloumn, width) {
+       var inexColValue = indexValue % cloumn;
+       if(inexColValue === 0) {
+         inexColValue = cloumn;
+       }
+     const leftValue = ((inexColValue-1) * (width)) + (16*(inexColValue-1));
+     return leftValue;
+  }
+
+</script>

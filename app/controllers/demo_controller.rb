@@ -9,5 +9,11 @@ class DemoController < ApplicationController
   end
 
  def animation
+   @images = Image.all
  end
+
+ def masonary
+   @images = Image.all
+ end
+
 end

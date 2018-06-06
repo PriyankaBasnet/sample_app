@@ -1,8 +1,127 @@
-<div class="circle-wrapper">
+<!-- <div class="circle-wrapper">
   <div class="big-circle"></div>
   <div class="inner-circle"></div>
 </div>
 
 <div class="map-nav-icon-wrapper">
   <img class="map-nav-icon" src="https://cdn2.iconfinder.com/data/icons/metro-uinvert-dock/128/Google_Places.png">
+</div> -->
+<div class="layout">
+<% @images.each_with_index do |image, index| %>
+  <div class="image-content" id="image-content-<%= index %>">
+    <img data-image-full="<%= image.url %>" class="image-card" id="image-<%= index %>"/>
+  </div>
+<% end %>
 </div>
+
+
+<!-- <div class="layout">
+  <div class="item item-1">
+    1 It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages,
+     and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+  </div>
+
+  <div class="item item-1">
+    2 It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages,
+    and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+  </div>
+
+  <div class="item item-2">
+    3 It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages
+  </div>
+
+  <div class="item item-3">
+    4 It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages,
+    and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+    It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages,
+     and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+     It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages,
+     and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+     It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages,
+      and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+  </div>
+
+  <div class="item item-4">
+    5 It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages,
+    and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+    It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages,
+    and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+  </div>
+
+  <div class="item item-5">
+    6 It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages,
+     and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+     It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages.
+  </div>
+
+  <div class="item item-6">
+    7 It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages,
+     and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+     It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages.
+  </div>
+
+  <div class="item item-7">
+    8 It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages,
+    and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+    It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages,
+  </div>
+
+  <div class="item item-8">
+    9 It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages,
+    and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+    It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages,
+    It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages,
+    and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+    It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages,
+     and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+  </div>
+
+  <div class="item item-9">
+    10 It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages,
+    and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+    It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages,
+  </div>
+
+</div> -->
+
+
+<script>
+
+  window.onload = loadOnViewportImages();
+
+  window.addEventListener('scroll', ()=> {
+    loadOnViewportImages();
+  });
+
+  function loadOnViewportImages() {
+    const imageElement =  document.querySelectorAll('.image-card');
+    imageElement.forEach(function(image) {
+      const viewportHeight = window.innerHeight + window.pageYOffset;
+      if(image.offsetTop <= viewportHeight) {
+          imageUrl = image.getAttribute('data-image-full');
+          image.src = imageUrl;
+          callbackMasonaryLayout();
+       }
+    });
+  }
+
+  function callbackMasonaryLayout() {
+    const allBoxElement = document.getElementsByClassName('image-card');
+     const contentHeightArray = [];
+    for(var index=0; index < allBoxElement.length-1; index++) {
+      const contentHeight = document.querySelector('#image-'+index+'').clientHeight;
+      contentHeightArray.push(contentHeight);
+    }
+    // const minHeightContent =  Math.min(...contentHeightArray);
+    // document.getElementsByClassName('layout')[0].style.setProperty('grid-auto-rows', minHeightContent +'px');
+
+    // document.getElementsByClassName('layout')[0].style.setProperty('grid-auto-rows', 20 +'px');
+
+    for(var index=0; index < allBoxElement.length; index++) {
+       const height = document.querySelector('#image-'+index+'').clientHeight;
+       const rowSpanValue =  Math.ceil((height+20)/ (40+20));
+       document.getElementById('image-content-'+index+'').style.setProperty('grid-row-end', 'span '+rowSpanValue);
+    }
+  }
+
+</script>

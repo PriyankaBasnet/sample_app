@@ -7,11 +7,11 @@
         </div>
         <div class="gallery-header-text">StyleCracker</div>
       </div>
-      <div class="grid">
+      <div class="grid" onload="script">
         <% @images.each do |image| %>
           <div class="image-content">
             <div class="item">
-              <img onclick="getImagePopup('<%= image.url %>')" data-image-full="<%= image.url %>" class="image-card" />
+              <img onclick="getImagePopup('<%= image.url %>')" data-image-full="<%= image.url %>" src="<%= image.url %>" class="image-card" />
             </div>
           </div>
         <% end %>
@@ -41,7 +41,7 @@ window.addEventListener('scroll', ()=> {
   } else {
       document.getElementsByClassName('top-scrollbar')[0].style.display = 'none';
   }
-  lazyload();
+  loadImages();
 });
 
 function resetPageOffset() {
@@ -49,22 +49,20 @@ function resetPageOffset() {
 }
 
  //lazyload starts from here
-   window.onload = lazyload();
-    function lazyload() {
+   window.onload = loadImages();
       setTimeout(loadImages, 2000);
       function loadImages() {
         const imageElement =  document.querySelectorAll('.image-card');
         imageElement.forEach(function(image){
           const viewportHeight = window.innerHeight + window.pageYOffset;
-          if(image.offsetTop < viewportHeight || image.offsetTop == viewportHeight) {
+          if(image.offsetTop <= viewportHeight) {
               imageUrl = image.getAttribute('data-image-full');
               image.src = imageUrl;
-              image.style.backgroundImage = 'url(' + imageUrl + ')';
-              setTimeout(removeBlurFromImages(image), 3500);
+              removeBlurFromImages(image);
            }
         });
       }
-    }
+
 
     function removeBlurFromImages(image) {
       image.classList.add('is-loaded');
